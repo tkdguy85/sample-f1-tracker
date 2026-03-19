@@ -21,10 +21,76 @@ class TeamRead(BaseModel):
   model_config = {"from_attributes": True}
     
 # * DRIVES * 
-
+class DriverCreate(BaseModel):
+  id: str
+  name: str
+  number: str
+  team_id: str
+  flag: str
+  
+class DriverUpdate(BaseModel):
+  name: Optional[str] = None
+  number: Optional[int] = None
+  team_id: Optional[str] = None
+  flag: Optional[str] = None
+  
+class DriverRead(BaseModel):
+  id: str
+  name: str
+  number: int
+  team_id: str
+  flag: str
+  
+  model_config = {"from_attributes": True}
 
 # * RACES * 
+class RaceCreate(BaseModel):
+  id: str
+  round: int
+  name: str
+  circuit: str
+  country: str
+  flag: str
+  date: str
+  city: str
+  sprint: bool = False
+  laps: int
+  length: float
+  lap_record_time: str = "TBD"
+  lap_record_holder: str = "-"
+  lap_record_year: Optional[int] = None
 
+class RaceUpdate(BaseModel):
+  name: Optional[str] = None
+  circuit: Optional[str] = None
+  country: Optional[str] = None
+  flag: Optional[str] = None
+  date: Optional[str] = None
+  city: Optional[str] = None
+  sprint: Optional[bool] = None
+  laps: Optional[int] = None
+  length: Optional[float] = None
+  lap_record_time: Optional[str] = None
+  lap_record_holder: Optional[str] = None
+  lap_record_year: Optional[int] = None
+
+class RaceRead(BaseModel):
+  id: str
+  round: int
+  name: str
+  circuit: str
+  country: str
+  flag: str
+  date: str
+  city: str
+  sprint: bool
+  laps: int
+  length: float
+  lap_record_time: str
+  lap_record_holder: str
+  lap_record_year: Optional[int]
+
+  model_config = {"from_attributes": True}
 
 # * SESSIONS * 
 
