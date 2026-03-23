@@ -130,6 +130,20 @@ class WeekendWrite(BaseModel):
   sessions: list[SessionWrite]
 
 # * SEASON STANDINGS * 
-
+class DriverStandingEntry(BaseModel):
+  position: int
+  driver_id: str
+  name: str
+  team_id: str
+  points: int
+  
+class TeamStandingEntry(BaseModel):
+  position: int
+  team_id: str
+  name: str
+  points: int
+class Standings(BaseModel):
+  drivers: list[DriverStandingEntry]
+  teams: list[TeamStandingEntry]
 
 # * FULL GRID #
