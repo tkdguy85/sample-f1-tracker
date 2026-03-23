@@ -120,7 +120,14 @@ class SessionRead(BaseModel):
   model_config = {"from_attributes": True}
 
 # * WEEKEND WRAP UP * 
-
+class WeekendWrite(BaseModel):
+  """
+        POST /races/{race_id}/weekend
+        Replaces all session data for an entire race weekend in one shot.
+        Keys are session_type strings; values are lists of entry dicts.
+    """
+    
+  sessions: list[SessionWrite]
 
 # * SEASON STANDINGS * 
 
