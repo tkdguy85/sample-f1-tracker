@@ -93,7 +93,31 @@ class RaceRead(BaseModel):
   model_config = {"from_attributes": True}
 
 # * SESSIONS * 
-
+class SessionEntryWrite(BaseModel):
+  driver_id: str
+  position: Optional[int] = None
+  status: Optional[str] = None # DNS/DSQ/DNF etc...
+  time: Optional[str] = None
+  laps: Optional[int] = None
+  points: Optional[int] = None
+  
+class SessionEntryRead(SessionEntryWrite):
+  id: int
+  session_id: int
+  
+  model_config = {"from_attributes": True}
+  
+class SessionWrite(BaseModel):
+  session_type: str #FP1, 2, 3, Sprint, Race ...etc
+  entries: list[SessionEntryWrite]
+  
+class SessionRead(BaseModel):
+  id: int
+  race_id: str
+  session_type: str
+  entries: list[SessionEntryRead]
+  
+  model_config = {"from_attributes": True}
 
 # * WEEKEND WRAP UP * 
 
