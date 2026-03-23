@@ -147,3 +147,19 @@ class Standings(BaseModel):
   teams: list[TeamStandingEntry]
 
 # * FULL GRID #
+class GridCell(BaseModel):
+  race_id: str
+  session_type: str
+  driver_id: Optional[str]
+  team_id: Optional[str]
+  position: Optional[int]
+  status: Optional[str]
+  time: Optional[str]
+  laps: Optional[int]
+  points: Optional[int]
+  
+class SeasonGrid(BaseModel):
+  races: list[RaceRead]
+  drivers: list[DriverRead]
+  teams: list[TeamRead]
+  cells: list[GridCell]
