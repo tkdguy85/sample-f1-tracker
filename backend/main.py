@@ -11,23 +11,23 @@ async def lifespan(app: FastAPI):
   yield
   
 app = FastAPI(
-    title="F1 2026 Season Tracker API",
-    version="1.0.0",
-    description="Backend for the F1 2026 season tracker — manages teams, drivers, races, and session results.",
-    lifespan=lifespan,
+  title="F1 2026 Season Tracker API",
+  version="1.0.0",
+  description="Backend for the F1 2026 season tracker — manages teams, drivers, races, and session results.",
+  lifespan=lifespan,
 )
 
 # CORS setup
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",   # Vite dev server
-        "http://localhost:3000",   # Backend dev server
-        # "http://localhost:4173",   # Vite preview
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+  CORSMiddleware,
+  allow_origins=[
+    "http://localhost:5173",   # Vite dev server
+    "http://localhost:3000",   # Backend dev server
+    # "http://localhost:4173",   # Vite preview
+  ],
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
 )
 
 # Routers
