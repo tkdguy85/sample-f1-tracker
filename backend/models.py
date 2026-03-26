@@ -1,5 +1,4 @@
-from __future__ import annotations
-from typing import Optional
+from typing import Optional, List
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -10,7 +9,7 @@ class Team(SQLModel, table=True):
   id: str = Field(primary_key=True)
   name: str
   color: str
-  drivers: list["Driver"] = Relationship(back_populates="team_rel")
+  drivers: List["Driver"] = Relationship(back_populates="team_rel")
 
 
 #* DRIVERS *#
@@ -43,7 +42,7 @@ class Race(SQLModel, table=True):
   lap_record_time: str = "TBD"
   lap_record_holder: str = "-"
   lap_record_year: Optional[int] = None
-  sessions: list["Session"] = Relationship(back_populates="race_rel")
+  sessions: List["Session"] = Relationship(back_populates="race_rel")
 
 
 #* SESSIONS *#
@@ -55,7 +54,7 @@ class Session(SQLModel, table=True):
   race_id: str = Field(foreign_key="races.id")
   session_type: str
   race_rel: Optional[Race] = Relationship(back_populates="sessions")
-  entries: list["SessionEntry"] = Relationship(back_populates="session_rel") 
+  entries: List["SessionEntry"] = Relationship(back_populates="session_rel") 
 
 
 #* SESSION ENTRIES *#
