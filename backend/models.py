@@ -1,10 +1,10 @@
-from typing import Optional, List
+from typing import Optional, List, ClassVar
 from sqlmodel import Field, Relationship, SQLModel
 
 
 #* TEAMS *#
 class Team(SQLModel, table=True):
-  __tablename__ = "teams"
+  __tablename__: ClassVar[str] = "teams"
   
   id: str = Field(primary_key=True)
   name: str
@@ -14,7 +14,7 @@ class Team(SQLModel, table=True):
 
 #* DRIVERS *#
 class Driver(SQLModel, table=True):
-  __tablename__ = "drivers"
+  __tablename__: ClassVar[str] = "drivers"
   
   id: str = Field(primary_key=True)
   name: str
@@ -26,7 +26,7 @@ class Driver(SQLModel, table=True):
 
 #* RACES *#
 class Race(SQLModel, table=True):
-  __tablename__ = "races"
+  __tablename__: ClassVar[str] = "races"
   
   id: str = Field(primary_key=True)
   round: int
@@ -48,7 +48,7 @@ class Race(SQLModel, table=True):
 #* SESSIONS *#
 class Session(SQLModel, table=True):
   # Session types refer to FP1, Q, Race, etc
-  __tablename__ = "sessions"
+  __tablename__: ClassVar[str] = "sessions"
   
   id: Optional[int] = Field(default=None, primary_key=True)
   race_id: str = Field(foreign_key="races.id")
@@ -59,7 +59,7 @@ class Session(SQLModel, table=True):
 
 #* SESSION ENTRIES *#
 class SessionEntry(SQLModel, table=True):
-  __tablename__ = "session_entries"
+  __tablename__: ClassVar[str] = "session_entries"
   
   id: Optional[int] = Field(default=None, primary_key=True)
   session_id: int = Field(foreign_key="sessions.id")
