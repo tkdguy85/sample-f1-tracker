@@ -17,14 +17,14 @@ from ..schemas import (
 
 router = APIRouter(tags=["standings"])
 
-RACE_POINTS   = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
+RACE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 SPRINT_POINTS = [8, 7, 6, 5, 4, 3, 2, 1]
 
 
 def _points_map(db: Session) -> tuple[dict[str, int], dict[str, int]]:
-  drivers  = db.exec(select(Driver)).all()
+  drivers = db.exec(select(Driver)).all()
   driver_pts: dict[str, int] = {driver.id: 0 for driver in drivers}
-  team_pts:   dict[str, int] = {driver.team_id: 0 for driver in drivers}
+  team_pts: dict[str, int] = {driver.team_id: 0 for driver in drivers}
 
   entries = db.exec(select(SessionEntry)).all()
   session_types: dict[int, str] = {}
@@ -49,28 +49,28 @@ def get_standings(db: Session = Depends(get_session)):
   driver_pts, team_pts = _points_map(db)
 
   drivers = db.exec(select(Driver)).all()
-  teams   = db.exec(select(Team)).all()
+  teams = db.exec(select(Team)).all()
 
   sorted_drivers = sorted(drivers, key=lambda driver: driver_pts.get(driver.id, 0), reverse=True)
-  sorted_teams   = sorted(teams,   key=lambda team: team_pts.get(team.id, 0),   reverse=True)
+  sorted_teams = sorted(teams,   key=lambda team: team_pts.get(team.id, 0),   reverse=True)
 
   return Standings(
-    drivers=[
+    drivers = [
       DriverStandingEntry(
-        position=pos + 1,
-        driver_id=driver.id,
-        name=driver.name,
-        team_id=driver.team_id,
-        points=driver_pts.get(driver.id, 0),
+        position = pos + 1,
+        driver_id = driver.id,
+        name = driver.name,
+        team_id = driver.team_id,
+        points = driver_pts.get(driver.id, 0),
       )
       for pos, driver in enumerate(sorted_drivers)
     ],
-    teams=[
+    teams = [
       TeamStandingEntry(
-        position=pos + 1,
-        team_id=team.id,
-        name=team.name,
-        points=team_pts.get(team.id, 0),
+        position = pos + 1,
+        team_id = team.id,
+        name = team.name,
+        points = team_pts.get(team.id, 0),
       )
       for pos, team in enumerate(sorted_teams)
     ],
@@ -101,20 +101,20 @@ def get_season_grid(db: Session = Depends(get_session)):
       continue
     driver = driver_map.get(entry.driver_id)
     cells.append(GridCell(
-      race_id=session.race_id,
-      session_type=session.session_type,
-      driver_id=entry.driver_id,
-      team_id=driver.team_id if driver else None,
-      position=entry.position,
-      status=entry.status,
-      time=entry.time,
-      laps=entry.laps,
-      points=entry.points,
+      race_id = session.race_id,
+      session_type = session.session_type,
+      driver_id = entry.driver_id,
+      team_id = driver.team_id if driver else None,
+      position = entry.position,
+      status = entry.status,
+      time = entry.time,
+      laps = entry.laps,
+      points = entry.points,
     ))
 
   return SeasonGrid(
-    races=[RaceRead.model_validate(race) for race in races],
-    drivers=[DriverRead.model_validate(driver) for driver in drivers],
-    teams=[TeamRead.model_validate(team) for team in teams],
-    cells=cells,
+    races = [RaceRead.model_validate(race) for race in races],
+    drivers = [DriverRead.model_validate(driver) for driver in drivers],
+    teams = [TeamRead.model_validate(team) for team in teams],
+    cells = cells,
   )
