@@ -222,7 +222,7 @@ DRIVERS = [
     "flag": "🇫🇮"
   },
 ]
-#* TEAMS & DRIVERS *#
+#* TEAMS & DRIVERS - END *#
 
 #* RACE/TRACK INFO *#
 RACES = [
@@ -611,23 +611,23 @@ RACES = [
     "lap_record_year": 2021
   },
 ]
-#* RACE/TRACK INFO *#
+#* RACE/TRACK INFO - END *#
 
 def seed() -> None:
   create_db_and_tables()
 
   with Session(engine) as db:
-    for t in TEAMS:
-      if not db.get(Team, t["id"]):
-        db.add(Team(**t))
+    for team in TEAMS:
+      if not db.get(Team, team["id"]):
+        db.add(Team(**team))
 
-    for d in DRIVERS:
-      if not db.get(Driver, d["id"]):
-        db.add(Driver(**d))
+    for driver in DRIVERS:
+      if not db.get(Driver, driver["id"]):
+        db.add(Driver(**driver))
 
-    for r in RACES:
-      if not db.get(Race, r["id"]):
-        db.add(Race(**r))
+    for race in RACES:
+      if not db.get(Race, race["id"]):
+        db.add(Race(**race))
 
   db.commit()
   print("Seed population complete.")
