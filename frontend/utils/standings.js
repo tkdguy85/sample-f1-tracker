@@ -39,3 +39,16 @@ export function calcTeamPoints(cells, drivers) {
   })
   return pts
 }
+
+export function calcTeamRacePoints(cells, drivers, teamId, raceId) {
+  const teamDriverIds = new Set(
+    drivers
+      .filter((driver) => driver.team_id === teamId)
+      .map((driver) => driver.id)
+  )
+  const raceCells = cells.filter(
+    (cell) => cell.race_id === raceId && cell.session_type === "race" && teamDriverIds.has(cell.driver_id)
+  )
+  if (raceCells.length === 0) return null
+  return raceCells.reduce((acc, cell) => acc + (cell.points ?? 0), 0)
+}
