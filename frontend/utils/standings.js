@@ -52,3 +52,15 @@ export function calcTeamRacePoints(cells, drivers, teamId, raceId) {
   if (raceCells.length === 0) return null
   return raceCells.reduce((acc, cell) => acc + (cell.points ?? 0), 0)
 }
+
+// * Sorted Standings
+export function getDriverStandings(cells, drivers) {
+  const pts = calcDriverPoints(cells);
+  return [...drivers].sort((curr, next) => (pts[next.id] ?? 0) - (pts[curr.id] ?? 0));
+}
+
+export function getTeamStandings(cells, drivers, teams) {
+  const pts = calcTeamPoints(cells, drivers);
+  return [...teams].sort((curr, next) => (pts[next.id] ?? 0) - (pts[curr.id] ?? 0));
+}
+
