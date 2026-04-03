@@ -32,7 +32,7 @@ export function calcDriverPoints(cells) {
 }
 
 export function calcTeamPoints(cells, drivers) {
-  const driverPts = calcDriverPoints(cells);
+  const driverPts = calcDriverPoints(cells)
   const pts = {}
   drivers.forEach((driver) => {
     pts[driver.team_id] = (pts[driver.team_id] ?? 0) + (driverPts[driver.id] ?? 0)
@@ -55,12 +55,30 @@ export function calcTeamRacePoints(cells, drivers, teamId, raceId) {
 
 // * Sorted Standings
 export function getDriverStandings(cells, drivers) {
-  const pts = calcDriverPoints(cells);
-  return [...drivers].sort((curr, next) => (pts[next.id] ?? 0) - (pts[curr.id] ?? 0));
+  const pts = calcDriverPoints(cells)
+  return [...drivers].sort((curr, next) => (pts[next.id] ?? 0) - (pts[curr.id] ?? 0))
 }
 
 export function getTeamStandings(cells, drivers, teams) {
-  const pts = calcTeamPoints(cells, drivers);
-  return [...teams].sort((curr, next) => (pts[next.id] ?? 0) - (pts[curr.id] ?? 0));
+  const pts = calcTeamPoints(cells, drivers)
+  return [...teams].sort((curr, next) => (pts[next.id] ?? 0) - (pts[curr.id] ?? 0))
+}
+
+//* Cell Search Helpers
+
+//* Returns the cell for a specific driver/race/session type, or null.
+export function getCell(cells, driverId, raceId, sessionType = "race") {
+  return cells.find(
+    (cell) => cell.driver_id === driverId && cell.race_id === raceId && cell.session_type === sessionType
+  ) ?? null
+}
+
+
+//* Returns all race-session cells for a given team in a given race.
+export function getTeamRaceCells(cells, drivers, teamId, raceId) {
+  const ids = new Set(drivers.filter((driver) => driver.team_id === teamId).map((driver) => driver.id))
+  return cells.filter(
+    (cell) => cell.race_id === raceId && cell.session_type === "race" && ids.has(cell.driver_id)
+  )
 }
 
