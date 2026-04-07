@@ -430,3 +430,155 @@ function SessionEntrySection({ sessionType, entries, onUpdate }) {
     </div>
   )
 }
+
+
+// * Driver Section
+function DriversTab() {
+  const {drivers, loading, updateDriver} = useDrivers()
+  const {teams} = useTeams()
+  const [editing, setEditing] = useState(null)
+  const [form, setForm] = useState({})
+  const [saving, setSaving] = useState(false)
+
+  const startEdit = (driver) => { 
+    setEditing(driver.id) 
+    setForm({ 
+      name: driver.name, 
+      number: driver.number, 
+      team_id: driver.team_id 
+    }) 
+  }
+  
+  const save = async (id) => {
+    setSaving(true)
+    await updateDriver(id, form)
+    setSaving(false)
+    setEditing(null)
+  }
+
+  if (loading) return <Spinner />
+  
+  return (
+    <div style={{
+      display:"grid",
+      gridTemplateColumns:"1fr 1fr",
+      gap:8
+    }}>
+      {drivers.map(driver => {
+        const team = teams.find(team => team.id === driver.team_id)
+        return (
+          <div 
+            key={driver.id} 
+            style={{
+              background:"#161920",
+              border:"1px solid #1E2028",
+              borderRadius:8,
+              padding:"10px 14px",
+              borderLeft:`3px solid ${team?.color??"#555"}`
+            }}
+          >
+            {editing === driver.id ? (
+              <div style={{
+                display:"flex",
+                flexDirection:"column",
+                gap:6
+              }}>
+                <Input 
+                  value={form.name}    
+                  onChange={name => setForm(form =>({...form, name: name}))}
+                  placeholder="Name" 
+                />
+                <Input 
+                  value={form.number}  
+                  onChange={num => setForm(form =>({...form, number: num}))} 
+                  placeholder="Number" 
+                  type="number" 
+                />
+                <select 
+                  value={form.team_id} 
+                  onChange={event => setForm(form =>({...form, team_id: event.target.value}))}
+                  style={{
+                    background:"#0D0F14",
+                    border:"1px solid #2A2D35",
+                    color:"#DDE",
+                    borderRadius:6,
+                    padding:"4px 6px",
+                    fontSize:11
+                  }}
+                >
+                  {teams.map(team => <option 
+                    key={team.id} 
+                    value={team.id}
+                  >
+                    {team.name}
+                  </option>)}
+                </select>
+                
+                <div style={{
+                    display:"flex",
+                    gap:6,
+                    marginTop:4
+                  }}>
+                  <button 
+                    onClick={() => save(driver.id)} 
+                    disabled={saving} 
+                    style={{...btnStyle("#E10600")}}
+                  >
+                    {saving?"…":"Save"}
+                  </button>
+                  <button 
+                    onClick={() => setEditing(null)} 
+                    style={{...btnStyle("#333")}}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div style={{
+                  display:"flex",
+                  justifyContent:"space-between",
+                  alignItems:"center"
+                }}>
+                  <span style={{
+                    color:"#DDE",
+                    fontSize:13}}
+                  >
+                    {driver.flag} {driver.name}
+                  </span>
+                  <span style={{
+                    color:team?.color,
+                    fontWeight:700,
+                    fontSize:13
+                  }}>
+                    #{driver.number}
+                  </span>
+                </div>
+                <div style={{
+                  color:"#555",
+                  fontSize:11,
+                  marginTop:2
+                }}>
+                  {team?.name}
+                </div>
+                <button 
+                  onClick={() => startEdit(driver)} 
+                  style={{
+                    ...btnStyle("#1E2028"),
+                    marginTop:6,
+                    fontSize:10
+                }}>
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+
+//
