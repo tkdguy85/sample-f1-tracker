@@ -581,4 +581,132 @@ function DriversTab() {
 }
 
 
-//
+// * Teams Tab
+function TeamsTab() {
+  const {teams, loading, updateTeam} = useTeams()
+  const [editing, setEditing] = useState(null)
+  const [color, setColor] = useState("")
+
+  const save = async (id) => {
+    await updateTeam(id, { color })
+    setEditing(null)
+  }
+
+  if (loading) return <Spinner />
+  
+  return (
+    <div style={{
+      display:"grid",
+      gridTemplateColumns:"1fr 1fr",
+      gap:8
+    }}>
+      {teams.map(team => (
+        <div 
+          key={team.id} 
+          style={{
+            background:"#161920",
+            border:"1px solid #1E2028",
+            borderRadius:8,
+            padding:"10px 14px",
+            borderLeft:`4px solid ${team.color}`
+          }}
+        >
+          <div style={{
+            display:"flex",
+            justifyContent:"space-between",
+            alignItems:"center"
+          }}>
+            <span style={{
+              color:"#DDE",
+              fontSize:13,
+              fontWeight:700
+            }}>
+              {team.name}
+            </span>
+            <div style={{
+              width:16,
+              height:16,
+              borderRadius:3,
+              background:team.color
+            }}/>
+          </div>
+          {editing === team.id ? (
+            <div style={{
+              display:"flex",
+              gap:6,
+              marginTop:8,
+              alignItems:"center"
+            }}>
+              <input 
+                type="color" 
+                value={color} 
+                onChange={edit => setColor(edit.target.value)}
+                style={{
+                  width:32,
+                  height:28,
+                  borderRadius:4,
+                  border:"none",
+                  cursor:"pointer"
+                }}/>
+              <input 
+                value={color} 
+                onChange={edit => setColor(edit.target.value)}
+                style={{
+                  flex:1,
+                  background:"#0D0F14",
+                  border:"1px solid #2A2D35",
+                  color:"#DDE",
+                  borderRadius:6,
+                  padding:"4px 8px",
+                  fontSize:11,
+                  fontFamily:"monospace"
+                }}/>
+              <button 
+                onClick={() => save(team.id)} 
+                style={{...btnStyle("#E10600")}}
+              >
+                Save
+              </button>
+              <button 
+                onClick={() => setEditing(null)} 
+                style={{...btnStyle("#333")}}
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <div style={{
+              display:"flex",
+              alignItems:"center",
+              gap:6,
+              marginTop:6
+            }}>
+              <span 
+                style={{
+                  color:"#555",
+                  fontSize:11,
+                  fontFamily:"monospace"
+                }}
+              >
+                {team.color}
+              </span>
+              <button 
+                onClick={() => { 
+                  setEditing(team.id) 
+                  setColor(team.color) 
+                }} 
+                style={{
+                  ...btnStyle("#1E2028")
+                  ,fontSize:10
+                }}
+              >
+                Edit
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
