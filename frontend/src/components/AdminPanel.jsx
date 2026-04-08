@@ -883,3 +883,87 @@ function TracksTab() {
 }
 
 
+// *Micro UI Primitives
+function Input({ value, onChange, placeholder, type = "text" }) {
+  return (
+    <input 
+      type={type} 
+      value={value ?? ""} 
+      placeholder={placeholder}
+      onChange={e => onChange(e.target.value)}
+      style={{
+        background:"#0D0F14",
+        border:"1px solid #2A2D35",
+        color:"#DDE",
+        borderRadius:6,
+        padding:"5px 8px",
+        fontSize:12,
+        width:"100%",
+        boxSizing:"border-box"
+      }}   
+    />
+  )
+}
+
+function Label({ children }) {
+  return (
+    <div style={{
+      color:"#666",
+      fontSize:11,
+      textTransform:"uppercase",
+      letterSpacing:1,
+      marginBottom:6
+    }}>
+      {children}
+    </div>
+  )
+}
+
+function ColHead({ children }) {
+  return (
+    <div style={{
+      color:"#444",
+      fontSize:10,
+      textTransform:"uppercase",
+      letterSpacing:.5
+    }}>
+      {children}
+    </div>
+  )
+}
+
+function Field({ label, children }) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      {children}
+    </div>
+  )
+}
+
+function Spinner() {
+  return (
+    <div style={{
+      color:"#555",
+      fontSize:12,
+      padding:20,
+      textAlign:"center"
+    }}>
+      Loading…
+    </div>
+  )
+}
+
+function btnStyle(backgroundColor) {
+  return (
+    { 
+      background: backgroundColor, 
+      border: "none", 
+      color: "#DDE", 
+      borderRadius: 6, 
+      padding: "5px 12px", 
+      cursor: "pointer", 
+      fontSize: 12 
+    }
+  )
+}
