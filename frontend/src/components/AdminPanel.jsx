@@ -710,3 +710,176 @@ function TeamsTab() {
   )
 }
 
+
+// * Tracks Tab
+function TracksTab() {
+  const {races, loading, updateRace} = useRaces()
+  const [editing, setEditing] = useState(null)
+  const [form, setForm] = useState({})
+  const [saving, setSaving] = useState(false)
+
+  const startEdit = (race) => {
+    setEditing(race.id)
+    setForm({ 
+      lap_record_time: race.lap_record_time, 
+      lap_record_holder: race.lap_record_holder, 
+      lap_record_year: race.lap_record_year, 
+      laps: race.laps, 
+      sprint: race.sprint 
+    })
+  }
+  const save = async (id) => {
+    setSaving(true)
+    await updateRace(id, form)
+    setSaving(false)
+    setEditing(null)
+  }
+
+  if (loading) return <Spinner />
+  return (
+    <div>
+      {races.map(race => (
+        <div 
+          key={race.id} 
+          style={{
+            borderBottom:"1px solid #141619",
+            padding:"10px 12px"
+          }}
+        >
+          <div 
+            style={{
+              display:"flex",
+              justifyContent:"space-between",
+              alignItems:"flex-start"
+            }}
+          >
+            <div>
+              <div style={{
+                color:"#CCC",
+                fontSize:12
+              }}
+              >
+                {race.flag} R{race.round} · {race.name}
+              </div>
+              <div style={{
+                color:"#555",
+                fontSize:11,
+                marginTop:2}}
+              >
+                {race.circuit} · {race.laps} laps · {race.sprint?"Sprint":""}
+              </div>
+              
+              {
+                editing !== race.id && <div 
+                  style={{
+                    color:"#444",
+                    fontSize:11
+                  }}
+                >
+                  Lap record: {race.lap_record_time} — {race.lap_record_holder} {race.lap_record_year ?? ""}
+                </div>
+              }
+            </div>
+            {
+              editing !== race.id && <button 
+                onClick={() => startEdit(race)} 
+                style={{
+                  ...btnStyle("#1E2028"),
+                  fontSize:10
+                }}
+              >
+                Edit
+              </button>
+            }
+          </div>
+          {
+            editing === race.id && (
+              <div 
+                style={{
+                  marginTop:10,
+                  display:"grid",
+                  gridTemplateColumns:"1fr 1fr 1fr",
+                  gap:8
+                }}
+              >
+                <Field label="Lap record time">
+                  <Input 
+                    value={form.lap_record_time??""} 
+                    onChange={value => setForm(form =>({...form, lap_record_time:value}))} 
+                    placeholder="1:20.235"  
+                  />
+                </Field>
+
+                <Field label="Record holder">
+                  <Input 
+                    value={form.lap_record_holder??""} 
+                    onChange={value => setForm(form =>({...form, lap_record_holder:value}))} 
+                    placeholder="Driver"
+                  />
+                </Field>
+
+                <Field label="Record year">
+                  <Input 
+                    value={form.lap_record_year??""} 
+                    onChange={value => setForm(form =>({...form, lap_record_year: value ? + value : null}))} 
+                    placeholder="2024" 
+                    type="number"
+                  />
+                </Field>
+
+                <Field label="Laps">
+                  <Input 
+                    value={form.laps??""} 
+                    onChange={value => setForm(form =>({...form, laps: + value}))} 
+                    type="number"  
+                  />
+                </Field>
+
+                <Field label="Sprint weekend">
+                  <select 
+                    value={form.sprint?"true":"false"} 
+                    onChange={event => setForm(form =>({...form, sprint: event.target.value === "true"}))}
+                    style={{
+                      background:"#0D0F14",
+                      border:"1px solid #2A2D35",
+                      color:"#DDE",
+                      borderRadius:6,
+                      padding:"5px 8px",
+                      fontSize:12,
+                      width:"100%"
+                    }}
+                  >
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </Field>
+
+                <div style={{
+                  display:"flex",
+                  gap:6,
+                  alignItems:"flex-end"
+                }}>
+                  <button 
+                    onClick={() => save(race.id)} 
+                    disabled={saving} 
+                    style={{...btnStyle("#E10600")}}
+                  >
+                    {saving?"…":"Save"}
+                  </button>
+                  <button 
+                    onClick={() => setEditing(null)} 
+                    style={{...btnStyle("#333")}}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )
+          }
+        </div>
+      ))}
+    </div>
+  )
+}
+
+
