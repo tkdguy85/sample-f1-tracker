@@ -111,14 +111,14 @@ function WeekendTab({ onSaved }) {
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState(null)
 
-  // Build local editable state from API sessions
+  // * Build local editable state from API sessions
   const selectedRace = races.find(race => race.id === raceId)
   const sessionTypes = selectedRace?.sprint ? SESSION_TYPES_SPRINT : SESSION_TYPES_STANDARD
 
-  // sessionData: { [session_type]: [ { driver_id, position, status, time, laps, points } ] }
+  // * sessionData: { [session_type]: [ { driver_id, position, status, time, laps, points } ] }
   const [sessionData, setSessionData] = useState({})
 
-  // When sessions load from server, populate local state
+  // * When sessions load from server, populate local state
   const initFromServer = () => {
     const init = {}
     sessions.forEach(session => { init[session.session_type] = session.entries })
