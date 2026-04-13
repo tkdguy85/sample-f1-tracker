@@ -5,17 +5,17 @@ import { SprintPip } from "./UI"
 import { PositionCell } from "./PositionCell"
 import { TrackModal } from "./TrackModal"
 
-const COL_W      = 48
-const LABEL_W    = 182
-const PTS_W      = 72
+const COL_W = 48
+const LABEL_W = 182
+const PTS_W = 72
 
 // ── SeasonGrid ────────────────────────────────────────────────
 export function SeasonGrid({ view }) {
   const [activeRace, setActiveRace] = useState(null)
 
-  const driverPts  = calcDriverPoints()
-  const teamPts    = calcTeamPoints()
-  const rows       = view === "driver" ? getDriverStandings() : getTeamStandings()
+  const driverPts = calcDriverPoints()
+  const teamPts = calcTeamPoints()
+  const rows = view === "driver" ? getDriverStandings() : getTeamStandings()
 
   const gridCols = `${LABEL_W}px repeat(${RACES.length}, ${COL_W}px) ${PTS_W}px`
   const minWidth = LABEL_W + RACES.length * COL_W + PTS_W
@@ -31,7 +31,7 @@ export function SeasonGrid({ view }) {
         }}
       >
         <div style={{ minWidth }}>
-          {/* ── Header row ───────────────────────────── */}
+          {/* Header row */}
           <div style={{ display: "grid", gridTemplateColumns: gridCols }}>
             {/* Corner */}
             <HeaderCell style={{ justifyContent: "flex-start", padding: "0 14px" }}>
@@ -49,19 +49,19 @@ export function SeasonGrid({ view }) {
               />
             ))}
 
-            {/* PTS column */}
+            {/* Points column */}
             <HeaderCell>
               <span style={{ fontSize: 10, color: "#E8CA00", fontWeight: 700, letterSpacing: 1 }}>PTS</span>
             </HeaderCell>
           </div>
 
-          {/* ── Data rows ────────────────────────────── */}
+          {/* Data rows */}
           {rows.map((row, idx) => {
-            const isDriver  = view === "driver"
-            const driverId  = isDriver ? row.id : null
-            const teamId    = isDriver ? row.team : row.id
-            const totalPts  = isDriver ? (driverPts[row.id] ?? 0) : (teamPts[row.id] ?? 0)
-            const team      = getTeam(teamId)
+            const isDriver = view === "driver"
+            const driverId = isDriver ? row.id : null
+            const teamId = isDriver ? row.team : row.id
+            const totalPts = isDriver ? (driverPts[row.id] ?? 0) : (teamPts[row.id] ?? 0)
+            const team = getTeam(teamId)
 
             return (
               <div
@@ -84,7 +84,13 @@ export function SeasonGrid({ view }) {
                     minHeight: 36,
                   }}
                 >
-                  <span style={{ color: "#444", fontSize: 11, fontWeight: 700, width: 20, flexShrink: 0 }}>
+                  <span style={{ 
+                    color: "#444", 
+                    fontSize: 11, 
+                    fontWeight: 700, 
+                    width: 20, 
+                    flexShrink: 0 
+                  }}>
                     {idx + 1}
                   </span>
                   <div
@@ -99,7 +105,13 @@ export function SeasonGrid({ view }) {
                   <div style={{ overflow: "hidden" }}>
                     {isDriver ? (
                       <>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#E0E1E2", letterSpacing: 0.3, whiteSpace: "nowrap" }}>
+                        <div style={{ 
+                          fontSize: 12, 
+                          fontWeight: 700, 
+                          color: "#E0E1E2", 
+                          letterSpacing: 0.3, 
+                          whiteSpace: "nowrap" 
+                        }}>
                           {row.name.split(" ").at(-1).toUpperCase()}
                         </div>
                         <div style={{ fontSize: 10, color: "#555" }}>
@@ -108,7 +120,13 @@ export function SeasonGrid({ view }) {
                       </>
                     ) : (
                       <>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#E0E1E2", letterSpacing: 0.3, whiteSpace: "nowrap" }}>
+                        <div style={{ 
+                          fontSize: 12, 
+                          fontWeight: 700, 
+                          color: "#E0E1E2", 
+                          letterSpacing: 0.3, 
+                          whiteSpace: "nowrap" 
+                        }}>
                           {row.name.toUpperCase()}
                         </div>
                         <div style={{ fontSize: 10, color: "#555" }}>
@@ -151,7 +169,11 @@ export function SeasonGrid({ view }) {
                     background: "#0F1117",
                   }}
                 >
-                  <span style={{ color: "#E8CA00", fontWeight: 700, fontSize: 14 }}>
+                  <span style={{ 
+                    color: "#E8CA00", 
+                    fontWeight: 700, 
+                    fontSize: 14 
+                  }}>
                     {totalPts}
                   </span>
                 </div>
@@ -167,7 +189,7 @@ export function SeasonGrid({ view }) {
   )
 }
 
-// ── Header cells ──────────────────────────────────────────────
+// * Header cells 
 function HeaderCell({ children, style = {} }) {
   return (
     <div
